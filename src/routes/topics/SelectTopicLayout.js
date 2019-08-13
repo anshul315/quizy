@@ -1,5 +1,6 @@
 import React from "react";
 import TopicList from "./components/TopicList";
+import axios from "axios";
 
 class SelectTopicLayout extends React.Component{
 
@@ -18,6 +19,19 @@ class SelectTopicLayout extends React.Component{
                 title: "Topic - 3"
             }
         ]
+    }
+
+    componentDidMount(){
+        axios("http://localhost:3001/content/topics")
+        .then(response => {
+            this.setState((prevState) => {
+                return ({
+                    ...prevState,
+                    topics: response.data
+                })
+            })
+        })
+        .catch(error => console.log(error))
     }
 
     topicSelected = (topic) => {
