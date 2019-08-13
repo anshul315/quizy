@@ -1,7 +1,7 @@
 import React from "react";
 import Question from "./components/Question";
 
-class QuizLayout extends React.Component{
+class QuizLayout extends React.Component{ 
     state = {
         started: false,
         questions: [
@@ -126,7 +126,6 @@ class QuizLayout extends React.Component{
                             <button onClick={this.startQuiz}>Start Quiz</button>
                     </div>
         }
-
 
 
         return (
