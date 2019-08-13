@@ -3,7 +3,7 @@ import React from "react";
 const topic = (props) => {
     return (
         <div>
-            <p>{props.topic.title}</p>
+            <p onClick={props.topicSelected}>{props.topic.title}</p>
         </div>
     )
 }
