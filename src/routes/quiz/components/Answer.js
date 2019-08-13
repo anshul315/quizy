@@ -3,7 +3,7 @@ import React from "react";
 const answer = (props) => {
     return (
         <React.Fragment>
-            <p>{props.answer.title}</p>
+            <p onClick={props.selectAnswer}>{props.answer.title}</p>
         </React.Fragment>
     )
 }

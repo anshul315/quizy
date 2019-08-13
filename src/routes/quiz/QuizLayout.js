@@ -65,6 +65,7 @@ class QuizLayout extends React.Component{
         ended: false,
         participants: [],
         topic: {},
+        correct_count: 0,
     }
 
     startQuiz = () => {
@@ -77,15 +78,49 @@ class QuizLayout extends React.Component{
         })
     }
 
+    selectAnswer = (answer) =>{
+        let ended = false;
+        let nextQuestionIndex = this.state.active_question + 1
+        if(nextQuestionIndex >= this.state.questions.length){
+            ended = true
+            nextQuestionIndex = this.state.active_question
+        }
+
+        if(answer.is_correct){
+            this.setState((prevState) => {
+                return {
+                    ...prevState,
+                    active_question: nextQuestionIndex,
+                    ended: ended,
+                    correct_count: prevState.correct_count + 1
+                }
+            })
+        }else{
+            this.setState((prevState) => {
+                return {
+                    ...prevState,
+                    active_question: nextQuestionIndex,
+                    ended: ended,
+                }
+            })
+        }
+
+    }
+
 
     render(){
         
         let display = "";
-        if(this.state.started){
+        if(this.state.ended){
+            display = <div>
+                        <p> Quiz Ended </p>
+                        <h6>Your score {this.state.correct_count} / {this.state.questions.length}</h6>
+                      </div>
+        } else if(this.state.started){
             let active_question = this.state.questions[this.state.active_question]
             display = <div>
-                        <Question key={active_question._id} question={active_question} />
-                    </div>
+                        <Question key={active_question._id} question={active_question} selectAnswer={this.selectAnswer}/>
+                      </div>
         }else{
             display = <div>
                             <button onClick={this.startQuiz}>Start Quiz</button>

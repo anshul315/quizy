@@ -5,7 +5,7 @@ const question = (props) => {
     return (
         <React.Fragment>
                     <p>{props.question.title}</p>
-                    { props.question.answers.map(answer => <Answer key={answer._id} answer={answer} />)}
+                    { props.question.answers.map(answer => <Answer key={answer._id} answer={answer} selectAnswer={() => props.selectAnswer(answer)}/>)}
         </React.Fragment>
 
     )
