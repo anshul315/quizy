@@ -1,5 +1,7 @@
 import React from "react";
+import axios from "axios";
 import Question from "./components/Question";
+
 
 class QuizLayout extends React.Component{ 
     state = {
@@ -67,6 +69,22 @@ class QuizLayout extends React.Component{
         topic: {},
         correct_count: 0,
     }
+
+    componentDidMount(){
+        let quiz_id = this.props.match.params.quiz_id
+        console.log(quiz_id)
+        axios(`http://localhost:3001/quiz/${quiz_id}`)
+        .then(response => {
+            this.setState((prevState) => {
+                console.log(response.data[0].questions)
+                return ({
+                    ...this.state,
+                    questions: response.data[0].questions
+                })
+            })
+        })
+    }
+
 
     startQuiz = () => {
         this.setState((prevState) => {

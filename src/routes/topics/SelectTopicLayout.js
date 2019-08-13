@@ -36,7 +36,11 @@ class SelectTopicLayout extends React.Component{
 
     topicSelected = (topic) => {
         console.log(topic);
-        this.props.history.push(`/quiz/${topic._id}`);
+        axios.post(`http://localhost:3001/quiz/create/${topic._id}`)
+        .then(response => {
+            this.props.history.push(`/quiz/${response.data._id}`);
+        })
+        
     }
 
 
