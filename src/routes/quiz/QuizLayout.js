@@ -65,8 +65,10 @@ class QuizLayout extends React.Component{
         ],
         active_question: -1,
         ended: false,
+        short_id: "",
         participants: [],
-        topic: {},
+        _id: "",
+        topic_id: "",
         correct_count: 0,
     }
 
@@ -76,10 +78,14 @@ class QuizLayout extends React.Component{
         axios(`http://localhost:3001/quiz/${quiz_id}`)
         .then(response => {
             this.setState((prevState) => {
-                console.log(response.data[0].questions)
+                console.log(response.data)
                 return ({
                     ...this.state,
-                    questions: response.data[0].questions
+                    questions: response.data.questions,
+                    participants: response.data.participants,
+                    short_id: response.data.short_id,
+                    _id: response.data._id,
+                    topic_id: response.data.topic_id
                 })
             })
         })
