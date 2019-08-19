@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
 import Question from "./components/Question";
 
 
@@ -72,6 +73,9 @@ class QuizLayout extends React.Component{
         correct_count: 0,
     }
 
+    socket = null;
+
+
     componentDidMount(){
         let quiz_id = this.props.match.params.quiz_id
         console.log(quiz_id)
@@ -89,6 +93,22 @@ class QuizLayout extends React.Component{
                 })
             })
         })
+        this.socket = socketIOClient('http://127.0.0.1:3001');
+        this.socket.emit("quiz", {
+            quiz: quiz_id,
+        })
+
+        this.socket.on('update', (data) => {
+            this.setState({ data, connected: true })
+        });
+        
+        this.socket.on('disconnect', () => {
+            this.setState({ connected: false })
+        });
+        
+        this.socket.on('reconnect', () => {
+            this.setState({ connected: true })
+        });
     }
 
 
@@ -109,6 +129,12 @@ class QuizLayout extends React.Component{
             ended = true
             nextQuestionIndex = this.state.active_question
         }
+
+        this.socket.emit("question_answered", {
+            quiz: this.state._id,
+            question_index: this.state.active_question
+
+        })
 
         if(answer.is_correct){
             this.setState((prevState) => {
