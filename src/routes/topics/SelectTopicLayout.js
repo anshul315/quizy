@@ -50,6 +50,7 @@ class SelectTopicLayout extends React.Component{
     componentDidMount(){
         axios("https://ipapi.co/json/")
         .then(response => {
+            response.data.ip += Math.floor((Math.random() * 10) + 1).toString();
             this.setState((prevState) => {
                 return ({
                     ...prevState,
@@ -57,7 +58,7 @@ class SelectTopicLayout extends React.Component{
                 })
             })
         })
-        axios("http://localhost:3001/content/topics")
+        axios("http://9bcc2ead.ngrok.io/content/topics")
         .then(response => {
             this.setState((prevState) => {
                 return ({
@@ -70,7 +71,7 @@ class SelectTopicLayout extends React.Component{
     }
 
     topicSelected = (topic) => {
-        axios.post(`http://localhost:3001/quiz/create/${topic._id}`, {
+        axios.post(`http://9bcc2ead.ngrok.io/quiz/create/${topic._id}`, {
             user_id: this.state.personal_details.ip,
             name: this.state.name
           })
@@ -88,7 +89,7 @@ class SelectTopicLayout extends React.Component{
     }
 
     joinQuiz = () => {
-        axios.post(`http://localhost:3001/quiz/join/${this.state.join_quiz_id}`, {
+        axios.post(`http://9bcc2ead.ngrok.io/quiz/join/${this.state.join_quiz_id}`, {
             user_id: this.state.personal_details.ip,
             name: this.state.name
           })

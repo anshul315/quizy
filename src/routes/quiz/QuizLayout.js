@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 import Question from "./components/Question";
+import ParticipantList from "./components/ParticipantList";
 
 
 class QuizLayout extends React.Component{ 
@@ -71,6 +72,8 @@ class QuizLayout extends React.Component{
         _id: "",
         topic_id: "",
         correct_count: 0,
+        name: "",
+        username: "]"
     }
 
     socket = null;
@@ -90,14 +93,41 @@ class QuizLayout extends React.Component{
                     participants: response.data.participants,
                     short_id: response.data.short_id,
                     _id: response.data._id,
-                    topic_id: response.data.topic_id
+                    topic_id: response.data.topic_id,
+                    name: this.props.location.state.name,
+                    user_id: this.props.location.state.personal_details.ip
                 })
             })
         })
-        this.socket = socketIOClient('http://127.0.0.1:3001');
-        this.socket.emit("quiz", {
-            quiz: quiz_id,
+        .then(() => {
+            this.handleSockets();
         })
+    }
+
+    handleSockets = () => {
+        this.socket = socketIOClient('http://9bcc2ead.ngrok.io/');
+        this.socket.emit("quiz", {
+            quiz: this.state._id,
+            user_id: this.state.user_id,
+            name: this.state.name
+        })
+
+        this.socket.on('player_connected', (data) => {
+            let found = this.state.participants.find((participant) => {
+                return participant.user_id === data.data.user_id
+            })
+            if(found){
+                return 
+            }
+            let newParticipants = [...this.state.participants]
+            newParticipants.push({user_id:data.data.user_id, name: data.data.name})
+            this.setState((prevState) => {
+                return ({
+                    ...prevState,
+                    participants: newParticipants
+                })
+            })
+        });
 
         this.socket.on('update', (data) => {
             this.setState({ data, connected: true })
@@ -110,16 +140,24 @@ class QuizLayout extends React.Component{
         this.socket.on('reconnect', () => {
             this.setState({ connected: true })
         });
+
+        this.socket.on('quiz_started', () => {
+            this.setState((prevState) => {
+                return {
+                    ...prevState,
+                    started: true,
+                    active_question: 0
+                }
+            })
+        })
     }
 
 
     startQuiz = () => {
-        this.setState((prevState) => {
-            return {
-                ...prevState,
-                started: true,
-                active_question: 0
-            }
+        this.socket.emit("start_quiz", {
+            quiz: this.state._id,
+            user_id: this.state.user_id,
+            name: this.state.name
         })
     }
 
@@ -174,7 +212,9 @@ class QuizLayout extends React.Component{
                       </div>
         }else{
             display = <div>
+                            <h2>Quiz ID is - {this.state.short_id}</h2>
                             <button onClick={this.startQuiz}>Start Quiz</button>
+                            <ParticipantList participants={this.state.participants} />
                     </div>
         }
 
