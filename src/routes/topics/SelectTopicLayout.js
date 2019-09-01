@@ -3,6 +3,7 @@ import TopicList from "./components/TopicList";
 import axios from "axios";
 import NameModal from "./components/NameModal";
 import {Redirect} from "react-router-dom";
+import JoinQuizHeader from "./components/JoinQuizHeader";
 
 class SelectTopicLayout extends React.Component{
 
@@ -113,10 +114,7 @@ class SelectTopicLayout extends React.Component{
             renderString = <Redirect to={{pathname: `/quiz/${this.state.quiz_id}`, state: {...this.state}}} />
         } else {
             renderString = <div>
-                                <div>
-                                    <input type="text" name="join_quiz_id" value={this.state.join_quiz_id} onChange={this.handleInputChange} />
-                                    <button onClick={this.joinQuiz} className="btn btn-primary"> Join Quiz </button>
-                                </div>
+                                <JoinQuizHeader handleInputChange={this.handleInputChange} join_quiz_id={this.state.join_quiz_id} joinQuiz={this.joinQuiz}/>
                                 <TopicList topics={this.state.topics} topicSelected={this.topicSelected} />
                             </div>
         }

@@ -7,7 +7,7 @@ const nameModal = (props) => {
     return (
       <div>
         <Modal isOpen={true}>
-          <ModalHeader>Please Enter your name</ModalHeader>
+          <ModalHeader>Please enter your name</ModalHeader>
           <ModalBody>
             <Input placeholder="Your Name" name="name" onChange={props.nameChange}/>
           </ModalBody>

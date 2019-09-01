@@ -3,6 +3,7 @@ import axios from "axios";
 import socketIOClient from "socket.io-client";
 import Question from "./components/Question";
 import ParticipantList from "./components/ParticipantList";
+import {Button} from "reactstrap";
 
 
 class QuizLayout extends React.Component{ 
@@ -211,10 +212,15 @@ class QuizLayout extends React.Component{
                         <Question key={active_question._id} question={active_question} selectAnswer={this.selectAnswer}/>
                       </div>
         }else{
-            display = <div>
-                            <h2>Quiz ID is - {this.state.short_id}</h2>
-                            <button onClick={this.startQuiz}>Start Quiz</button>
-                            <ParticipantList participants={this.state.participants} />
+            display = <div className="row">
+                            <div className="col-9 my-auto">
+                                <h6>Ask your peers to join</h6>
+                                <h4> Quiz ID - {this.state.short_id.toUpperCase()}</h4>
+                                <Button color="info" onClick={this.startQuiz}>Start Quiz</Button>
+                            </div>
+                            <div className="col-3">
+                                <ParticipantList participants={this.state.participants} />
+                            </div>
                     </div>
         }
 
