@@ -77,6 +77,7 @@ class QuizLayout extends React.Component{
 
 
     componentDidMount(){
+        console.log(this.props.location)
         let quiz_id = this.props.match.params.quiz_id
         console.log(quiz_id)
         axios(`http://localhost:3001/quiz/${quiz_id}`)
