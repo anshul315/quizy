@@ -84,7 +84,7 @@ class QuizLayout extends React.Component{
         console.log(this.props.location)
         let quiz_id = this.props.match.params.quiz_id
         console.log(quiz_id)
-        axios(`http://localhost:3001/quiz/${quiz_id}`)
+        axios(`http://5281a177.ngrok.io/quiz/${quiz_id}`)
         .then(response => {
             this.setState((prevState) => {
                 console.log(response.data)
@@ -106,7 +106,7 @@ class QuizLayout extends React.Component{
     }
 
     handleSockets = () => {
-        this.socket = socketIOClient('http://9bcc2ead.ngrok.io/');
+        this.socket = socketIOClient('http://5281a177.ngrok.io/');
         this.socket.emit("quiz", {
             quiz: this.state._id,
             user_id: this.state.user_id,
@@ -212,16 +212,25 @@ class QuizLayout extends React.Component{
                         <Question key={active_question._id} question={active_question} selectAnswer={this.selectAnswer}/>
                       </div>
         }else{
-            display = <div className="row">
-                            <div className="col-9 my-auto">
-                                <h6>Ask your peers to join</h6>
-                                <h4> Quiz ID - {this.state.short_id.toUpperCase()}</h4>
-                                <Button color="info" onClick={this.startQuiz}>Start Quiz</Button>
+            display = <section className="h-100">
+                        <div className="container h-100">
+                            <div class="row">
+                                <div className="col-8">
+                                    <div className="d-flex flex-column p-5">
+                                        <p className="h4">Ask your peers to join</p>
+                                        <p className="h2">Quiz ID - {this.state.short_id.toUpperCase()}</p>
+                                        <Button color="info" onClick={this.startQuiz}>Start Quiz</Button>
+                                    </div>
+                                </div>
+                                <div className="col-4">
+                                    <div className="p-5">
+                                        <p className="h4">Participants</p>
+                                        <ParticipantList participants={this.state.participants} />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col-3">
-                                <ParticipantList participants={this.state.participants} />
-                            </div>
-                    </div>
+                        </div>
+                    </section>  
         }
 
 

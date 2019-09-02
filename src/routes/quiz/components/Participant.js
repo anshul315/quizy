@@ -3,13 +3,11 @@ import {Card, CardBody, CardTitle} from "reactstrap";
 
 const participant = (props) => {
     return(
-        <div>
-        <Card>
+        <Card style={{ width: "20rem", margin: "10px" }}>
             <CardBody>
-            <CardTitle>{props.participant.name}</CardTitle>
+                <CardTitle>{props.participant.name}</CardTitle>
             </CardBody>
         </Card>
-        </div>
     )
 }
 

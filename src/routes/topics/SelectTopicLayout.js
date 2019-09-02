@@ -59,7 +59,7 @@ class SelectTopicLayout extends React.Component{
                 })
             })
         })
-        axios("http://9bcc2ead.ngrok.io/content/topics")
+        axios("http://5281a177.ngrok.io/content/topics")
         .then(response => {
             this.setState((prevState) => {
                 return ({
@@ -72,7 +72,7 @@ class SelectTopicLayout extends React.Component{
     }
 
     topicSelected = (topic) => {
-        axios.post(`http://9bcc2ead.ngrok.io/quiz/create/${topic._id}`, {
+        axios.post(`http://5281a177.ngrok.io/quiz/create/${topic._id}`, {
             user_id: this.state.personal_details.ip,
             name: this.state.name
           })
@@ -90,7 +90,7 @@ class SelectTopicLayout extends React.Component{
     }
 
     joinQuiz = () => {
-        axios.post(`http://9bcc2ead.ngrok.io/quiz/join/${this.state.join_quiz_id}`, {
+        axios.post(`http://5281a177.ngrok.io/quiz/join/${this.state.join_quiz_id}`, {
             user_id: this.state.personal_details.ip,
             name: this.state.name
           })
